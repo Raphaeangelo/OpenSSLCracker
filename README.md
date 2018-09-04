@@ -7,7 +7,7 @@ Note: This script is NOT just going through every password in the password.txt o
 
 Download both the script and the password.txt in the same directory. 
 
-'''chmod 755 opensslcracker.sh'''
+```chmod 755 opensslcracker.sh```
 
 Feel free to replace "password.txt" with "rockyou.txt" or any other password list you like.
 
