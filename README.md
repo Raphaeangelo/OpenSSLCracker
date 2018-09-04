@@ -9,4 +9,4 @@ Download both the script and the password.txt in the same directory. Feel free t
 
 Examples
 
-```./opensslcracker.sh FILE.txt.enc```
+```./opensslcracker.sh PATH/TO/THE/FILE.txt.enc```
