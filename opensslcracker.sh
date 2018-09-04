@@ -14,6 +14,6 @@ By: Raphaeangelo
 
 while read line
 do
-openssl aes-256-cbc -d -a -in $1 -pass pass:$line -out out.txt 2>out.txt >/dev/null && echo "===================================================" && cat out.txt && echo -en "\n\npassword is \E[033;32m$line\e[0m\n" && read -p "press return key to continue..." < /dev/tty; 
+openssl aes-256-cbc -d -a -in $1 -pass pass:$line -out out.txt 2>out.txt >/dev/null && printf "==================================================\n" && cat out.txt && printf "\n==================================================" && printf "\npassword is $line\n" && read -p "press return key to continue..." < /dev/tty; 
 
 done < ./password.txt
