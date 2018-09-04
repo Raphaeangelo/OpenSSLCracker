@@ -5,7 +5,11 @@ OpenSSL decrypt will output an error if the password entered was wrong. Because 
 
 Note: This script is NOT just going through every password in the password.txt only the passwords that didn't result in an error.
 
-Download both the script and the password.txt in the same directory. Feel free to replace "password.txt" with "rockyou.txt" or any other password list you like.
+Download both the script and the password.txt in the same directory. 
+
+'''chmod 755 opensslcracker.sh'''
+
+Feel free to replace "password.txt" with "rockyou.txt" or any other password list you like.
 
 Examples
 
