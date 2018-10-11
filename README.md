@@ -10,6 +10,12 @@ Download both the script and the password.txt in the same directory.
 
 Feel free to replace "password.txt" with "rockyou.txt" or any other password list you like.
 
+Run Command
+
+```./opensslcracker.sh PATH/TO/THE/FILE.txt.enc PATH/TO/THE/PASSWORD.txt```
+
 Examples
 
-```./opensslcracker.sh PATH/TO/THE/FILE.txt.enc```
+```./opensslcracker.sh secrect.txt.enc password.txt```
+
+```./opensslcracker.sh secrets.txt.enc /usr/share/wordlists/rockyou.txt```
