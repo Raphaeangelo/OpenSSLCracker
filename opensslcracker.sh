@@ -1,5 +1,5 @@
 #!/bin/bash
-"
+cat << "EOF" 
    ____                    _____  _____ _       _____                _             
   / __ \                  / ____|/ ____| |     / ____|              | |            
  | |  | |_ __   ___ _ __ | (___ | (___ | |    | |     _ __ __ _  ___| | _____ _ __ 
@@ -10,10 +10,16 @@
         |_|                                                                        
 
 By: Raphaeangelo
-"
+EOF
+printf "Working..."
 
 while read line
 do
-openssl aes-256-cbc -d -a -in $1 -pass pass:$line -out out.txt 2>out.txt >/dev/null && printf "==================================================\n" && cat out.txt && printf "\n==================================================" && printf "\npassword is $line\n" && read -p "press return key to continue..." < /dev/tty; 
-
+openssl aes-256-cbc -d -a -in $1 -pass pass:$line -out out.txt 2>out.txt >/dev/null
+if file out.txt | grep -q 'out.txt: ASCII text'
+	then
+		printf "\n==================================================\n\n" && cat out.txt && printf "\n\n==================================================" && printf "\npassword is $line\n" && exit
+	else
+		: 
+fi
 done < ./password.txt
