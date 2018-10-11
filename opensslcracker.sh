@@ -23,14 +23,13 @@ if [[ $2 == '' ]] ; then
     echo 'You need to supply a password (wordlist) file'
     exit 0
 fi
-printf "Working..."
 
 while read line
 do
-openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt 2>out.txt >/dev/null
+echo -ne "Trying password [$line]                                           \\r" && openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt 2>out.txt >/dev/null
 if file out.txt | grep -q 'out.txt: ASCII text'
 	then
-		printf "\n==================================================\n\n" && cat out.txt && printf "\n\n==================================================" && printf "\nPassword is $line\n" && exit
+		printf "\n==================================================\n\n" && cat out.txt && printf "\n\n==================================================" && printf "\nThe password is $line\n" && exit
 	else
 		: 
 fi
