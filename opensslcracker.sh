@@ -15,7 +15,7 @@ printf "Working..."
 
 while read line
 do
-openssl aes-256-cbc -d -a -in $1 -pass pass:$line -out out.txt 2>out.txt >/dev/null
+openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt 2>out.txt >/dev/null
 if file out.txt | grep -q 'out.txt: ASCII text'
 	then
 		printf "\n==================================================\n\n" && cat out.txt && printf "\n\n==================================================" && printf "\nPassword is $line\n" && exit
