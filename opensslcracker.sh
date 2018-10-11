@@ -11,6 +11,18 @@ cat << "EOF"
 
 By: Raphaeangelo
 EOF
+if [[ $# -eq 0 ]] ; then
+    echo 'You need to supply the location of the encrypted file AND the location of the password file in the arguments. E.g. ./opensslcracker.sh PATH/TO/THE/FILE.txt.enc PATH/TO/THE/PASSWORD.txt '
+    exit 0
+fi
+if [[ $# > 2 ]] ; then
+    echo 'You have too many arguments. Supply the encrypted file and the password file only. E.g. ./opensslcracker.sh PATH/TO/THE/FILE.txt.enc PATH/TO/THE/PASSWORD.txt'
+    exit 0
+fi
+if [[ $2 == '' ]] ; then
+    echo 'You need to supply a password (wordlist) file'
+    exit 0
+fi
 printf "Working..."
 
 while read line
@@ -22,4 +34,4 @@ if file out.txt | grep -q 'out.txt: ASCII text'
 	else
 		: 
 fi
-done < ./password.txt
+done < $2
