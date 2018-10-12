@@ -23,7 +23,12 @@ if [[ $2 == '' ]] ; then
     echo 'You need to supply a password (wordlist) file'
     exit 0
 fi
-
+    if file $1 | grep -q "openssl enc'd data with salted password, base64 encoded"; then
+    :
+    else
+    echo 'This file isnt an openssl encrypted data with salted password base64 encoded'
+    exit 0
+fi
 while read line
 do
 echo -ne "Trying password [$line]                                           \\r" && openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt 2>out.txt >/dev/null
