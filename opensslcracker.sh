@@ -15,11 +15,11 @@ if [[ $# -eq 0 ]] ; then
 	echo 'You need to supply the location of the encrypted file AND the location of the password file in the arguments. E.g. ./opensslcracker.sh PATH/TO/THE/FILE.txt.enc PATH/TO/THE/PASSWORD.txt '
 	exit 0
 fi
-	if [[ $# > 2 ]] ; then
+if [[ $# > 2 ]] ; then
 	echo 'You have too many arguments. Supply the encrypted file and the password file only. E.g. ./opensslcracker.sh PATH/TO/THE/FILE.txt.enc PATH/TO/THE/PASSWORD.txt'
 	exit 0
 fi
-	if [[ $2 == '' ]] ; then
+if [[ $2 == '' ]] ; then
 	echo 'You need to supply a password (wordlist) file'
 	exit 0
 fi
@@ -29,6 +29,13 @@ else
 	echo "This file isnt an openssl encrypted data with salted password, base64 encoded"
 	exit 0
 fi
+if file $2 | grep -q ": UTF-8 Unicode text"; then
+        :
+else
+        echo "The password file is not a valid text document"
+        exit 0
+fi
+
 COUNTER=0
 start_time="$(date -u +%s)"
 while read line
