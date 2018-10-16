@@ -40,13 +40,20 @@ COUNTER=0
 start_time="$(date -u +%s)"
 while read line
 do
-COUNTER=$[COUNTER + 1] && echo -ne "\\033[KPassword count [$COUNTER] Trying password [$line]\\r"
+COUNTER=$[COUNTER + 1]
+echo -ne "\\033[KPassword count [$COUNTER] Trying password [$line]\\r"
 openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt 2>out.txt >/dev/null
 if file out.txt | grep -q "out.txt: ASCII text"; then
-	echo "==================================================" && echo "" && cat out.txt && echo "" && echo "==================================================" && echo "The password is $line"
+	echo "=================================================="
+	echo ""
+	cat out.txt
+	echo ""
+	echo "=================================================="
+	echo "The password is $line"
 	end_time="$(date -u +%s)"
 	elapsed="$(($end_time-$start_time))"
-	echo "Time took $elapsed seconds and $COUNTER passwords tried" && exit
+	echo "Time took $elapsed seconds and $COUNTER passwords tried"
+	exit
 else
 	:
 fi
