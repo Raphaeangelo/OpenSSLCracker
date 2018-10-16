@@ -15,11 +15,11 @@ if [[ $# -eq 0 ]] ; then
 	echo 'You need to supply the location of the encrypted file AND the location of the password file in the arguments. E.g. ./opensslcracker.sh PATH/TO/THE/FILE.txt.enc PATH/TO/THE/PASSWORD.txt '
 	exit 0
 fi
-if [[ $# > 2 ]] ; then
+	if [[ $# > 2 ]] ; then
 	echo 'You have too many arguments. Supply the encrypted file and the password file only. E.g. ./opensslcracker.sh PATH/TO/THE/FILE.txt.enc PATH/TO/THE/PASSWORD.txt'
 	exit 0
 fi
-if [[ $2 == '' ]] ; then
+	if [[ $2 == '' ]] ; then
 	echo 'You need to supply a password (wordlist) file'
 	exit 0
 fi
@@ -46,7 +46,7 @@ if file out.txt | grep -q "out.txt: ASCII text"; then
 	echo "==================================================" && echo "" && cat out.txt && echo "" && echo "==================================================" && echo "The password is $line"
 	end_time="$(date -u +%s)"
 	elapsed="$(($end_time-$start_time))"
-	echo "Time took $elapsed seconds" && exit
+	echo "Time took $elapsed seconds and $COUNTER passwords tried" && exit
 else
 	:
 fi
