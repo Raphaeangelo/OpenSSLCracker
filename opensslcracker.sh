@@ -42,7 +42,18 @@ while read line
 do
 COUNTER=$[COUNTER + 1]
 echo -ne "\\033[KPassword count [$COUNTER] Trying password [$line]\\r"
-if openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt -md md5 2>out.txt >/dev/null && file out.txt | grep -q "text" ; then
+if openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt 2>out.txt >/dev/null && file out.txt | grep -q "text" ; then
+        echo "=================================================="
+        echo ""
+        cat out.txt
+        echo ""
+        echo "=================================================="
+        echo "The password is $line"
+        end_time="$(date -u +%s)"
+        elapsed="$(($end_time-$start_time))"
+        echo "Time took $elapsed seconds and $COUNTER passwords tried"
+        exit
+elif openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt -md md5 2>out.txt >/dev/null && file out.txt | grep -q "text" ; then
 	echo "=================================================="
 	echo ""
 	cat out.txt
@@ -53,7 +64,7 @@ if openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt -md md5 2>ou
 	elapsed="$(($end_time-$start_time))"
 	echo "Time took $elapsed seconds and $COUNTER passwords tried"
 	exit
-elif openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt 2>out.txt >/dev/null && file out.txt | grep -q "text" ; then
+elif openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt -md sha256 2>out.txt >/dev/null && file out.txt | grep -q "text" ; then
         echo "=================================================="
         echo ""
         cat out.txt
