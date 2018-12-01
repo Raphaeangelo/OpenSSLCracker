@@ -32,6 +32,7 @@ else
         echo "The password file is not a valid text document"
         exit 0
 fi
+file=$(echo "$1" | cut -f 1 -d '.')
 if file $1 | grep -q "openssl enc'd data with salted password, base64 encoded" ; then
 	COUNTER=0
 	start_time="$(date -u +%s)"
@@ -39,10 +40,10 @@ if file $1 | grep -q "openssl enc'd data with salted password, base64 encoded" ;
 	do
 	COUNTER=$[COUNTER + 1]
 	echo -ne "\\033[KPassword count [$COUNTER] Trying password [$line]\\r"
-	if openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt 2>out.txt >/dev/null && file out.txt | grep -q ": ASCII text" ; then
+	if openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out $file.decrypted.txt 2>$file.decrypted.txt >/dev/null && file $file.decrypted.txt | grep -q ": ASCII text" ; then
 	        echo "=================================================="
 	        echo ""
-	        cat out.txt
+	        cat $file.decrypted.txt
 	        echo ""
 	        echo "=================================================="
 	        echo "The password is $line"
@@ -50,10 +51,10 @@ if file $1 | grep -q "openssl enc'd data with salted password, base64 encoded" ;
 	        elapsed="$(($end_time-$start_time))"
 	        echo "Time took $elapsed seconds and $COUNTER passwords tried"
 	        exit
-	elif openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt -md md5 2>out.txt >/dev/null && file out.txt | grep -q ": ASCII text" ; then
+	elif openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out $file.decrypted.txt -md md5 2>$file.decrypted.txt >/dev/null && file $file.decrypted.txt | grep -q ": ASCII text" ; then
 		echo "=================================================="
 		echo ""
-		cat out.txt
+		cat $file.decrypted.txt
 		echo ""
 		echo "=================================================="
 		echo "The password is $line"
@@ -61,10 +62,10 @@ if file $1 | grep -q "openssl enc'd data with salted password, base64 encoded" ;
 		elapsed="$(($end_time-$start_time))"
 		echo "Time took $elapsed seconds and $COUNTER passwords tried"
 		exit
-	elif openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out out.txt -md sha256 2>out.txt >/dev/null && file out.txt | grep -q ": ASCII text" ; then
+	elif openssl aes-256-cbc -d -a -in $1 -pass pass:"$line" -out $file.decrypted.txt -md sha256 2>$file.decrypted.txt >/dev/null && file $file.decrypted.txt | grep -q ": ASCII text" ; then
 	        echo "=================================================="
 	        echo ""
-	        cat out.txt
+	        cat $file.decrypted.txt
 	        echo ""
 	        echo "=================================================="
 	        echo "The password is $line"
@@ -76,17 +77,18 @@ if file $1 | grep -q "openssl enc'd data with salted password, base64 encoded" ;
 		:
 	fi
 	done < $2
-elif file $1 | grep -q "openssl enc'd data with salted password" ; then
+fi
+if file $1 | grep -q "openssl enc'd data with salted password" ; then
 	COUNTER=0
 	start_time="$(date -u +%s)"
 	while read line
 	do
 	COUNTER=$[COUNTER + 1]
 	echo -ne "\\033[KPassword count [$COUNTER] Trying password [$line]\\r"
-	if openssl aes-256-cbc -d -in $1 -pass pass:"$line" -out out.txt 2>out.txt >/dev/null && file out.txt | grep -q ": ASCII text" ; then
+	if openssl aes-256-cbc -d -in $1 -pass pass:"$line" -out $file.decrypted.txt 2>$file.decrypted.txt >/dev/null && file $file.decrypted.txt | grep -q ": ASCII text" ; then
 	        echo "=================================================="
 	        echo ""
-	        cat out.txt
+	        cat $file.decrypted.txt
 	        echo ""
 	        echo "=================================================="
 	        echo "The password is $line"
@@ -94,10 +96,10 @@ elif file $1 | grep -q "openssl enc'd data with salted password" ; then
 	        elapsed="$(($end_time-$start_time))"
 	        echo "Time took $elapsed seconds and $COUNTER passwords tried"
 	        exit
-	elif openssl aes-256-cbc -d -in $1 -pass pass:"$line" -out out.txt -md md5 2>out.txt >/dev/null && file out.txt | grep -q ": ASCII text" ; then
+	elif openssl aes-256-cbc -d -in $1 -pass pass:"$line" -out $file.decrypted.txt -md md5 2>$file.decrypted.txt >/dev/null && file $file.decrypted.txt | grep -q ": ASCII text" ; then
 		echo "=================================================="
 		echo ""
-		cat out.txt
+		cat $file.decrypted.txt
 		echo ""
 		echo "=================================================="
 		echo "The password is $line"
@@ -105,10 +107,10 @@ elif file $1 | grep -q "openssl enc'd data with salted password" ; then
 		elapsed="$(($end_time-$start_time))"
 		echo "Time took $elapsed seconds and $COUNTER passwords tried"
 		exit
-	elif openssl aes-256-cbc -d -in $1 -pass pass:"$line" -out out.txt -md sha256 2>out.txt >/dev/null && file out.txt | grep -q ": ASCII text" ; then
+	elif openssl aes-256-cbc -d -in $1 -pass pass:"$line" -out $file.decrypted.txt -md sha256 2>$file.decrypted.txt >/dev/null && file $file.decrypted.txt | grep -q ": ASCII text" ; then
 	        echo "=================================================="
 	        echo ""
-	        cat out.txt
+	        cat $file.decrypted.txt
 	        echo ""
 	        echo "=================================================="
 	        echo "The password is $line"
@@ -121,6 +123,6 @@ elif file $1 | grep -q "openssl enc'd data with salted password" ; then
 	fi
 	done < $2
 else
-	echo "This file isnt an openssl encrypted data with salted password"
+	echo "This file doesn't appear to be encrypted using openssl AES-256"
 	exit 0
 fi
